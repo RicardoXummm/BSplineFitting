@@ -20,9 +20,6 @@ refined:     2014/08/05
 
 using namespace std;
 using namespace Eigen;
-
-
-
 class OpenCubicBSplineCurve 
 {
 
@@ -43,7 +40,7 @@ public:
 	//************************************
 	// Method:    nb_segment
 	// Returns:   unsigned int
-	// Function:  ÇúÏßÓÉ¶àÉÙ¶Î×é³É
+	// Function:  ï¿½ï¿½ï¿½ï¿½ï¿½É¶ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½
 	// Time:      2015/07/08
 	// Author:    Qian
 	//************************************
@@ -120,7 +117,7 @@ public:
 	//************************************
 	// Method:    local2GlobalIdx
 	// Returns:   int
-	// Function:  ÓÉlocalIdx±ä»»globalIdx
+	// Function:  ï¿½ï¿½localIdxï¿½ä»»globalIdx
 	// Time:      2015/07/10
 	// Author:    Qian
 	//************************************
@@ -148,9 +145,9 @@ private:
 
 
 private:
-	double interal_;                //²ÉÑùµãµÄ¼ä¸ô
-	std::vector<Vector2d> controls_;    //ÇúÏßµÄ¿ØÖÆµã
-	std::vector<Vector2d> positions_;   //ÇúÏßÉÏµÄ²ÉÑùµã
+	double interal_;                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½
+	std::vector<Vector2d> controls_;    //ï¿½ï¿½ï¿½ßµÄ¿ï¿½ï¿½Æµï¿½
+	std::vector<Vector2d> positions_;   //ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½
 
 };
 

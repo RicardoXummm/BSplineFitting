@@ -19,3 +19,5 @@
 *.exe
 *.out
 *.app
+external/eigen-3.4.0
+external/nanoflann

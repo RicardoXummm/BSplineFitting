@@ -1,9 +1,8 @@
-#include "open_cubic_b_spline.h"
+ï»¿#include "open_cubic_b_spline.h"
 #include <fstream>
-
-#include <ANN/ANN.h>
-
-
+#include <KDTreeVectorOfVectorsAdaptor.h>
+using namespace std;
+using namespace Eigen;
 
 
 void OpenCubicBSplineCurve::setNewControl( const vector<Vector2d>& controlPs)
@@ -27,7 +26,7 @@ void OpenCubicBSplineCurve::setNewControl( const vector<Vector2d>& controlPs)
 //************************************
 // Method:    getPos
 // Returns:   Eigen::Vector2d
-// Function:  ¹«Ê½B(t)µÄÕ¹¿ªÐÎÊ½
+// Function:  ï¿½ï¿½Ê½B(t)ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½Ê½
 // Time:      2014/08/05
 // Author:    Qian
 //************************************
@@ -171,45 +170,18 @@ double OpenCubicBSplineCurve::findFootPrint(const vector<Vector2d>& givepoints,
 	footPrints.clear();
 	footPrints.resize( givepoints.size(), Parameter(0,0.0) );
 
-	int iKNei = 1;
-	int iDim = 2;
-	int iNPts = positions_.size();
-	double eps = 0;
-
-	ANNpointArray dataPts = annAllocPts(iNPts, iDim); // allocate data points; // data points
-	ANNpoint queryPt = annAllocPt(iDim);  // allocate query point
-
-	ANNidxArray nnIdx = new ANNidx[iKNei]; // allocate near neigh indices
-	ANNdistArray dists = new ANNdist[iKNei]; // allocate near neighbor dists
-
-	for( int i = 0; i!= iNPts; ++i) {
-		dataPts[i][0] = positions_[i].x();
-		dataPts[i][1] = positions_[i].y();
-	}
-	ANNkd_tree* kdTree = new ANNkd_tree( // build search structure
-		dataPts, // the data points
-		iNPts, // number of points
-		iDim);
+	KDTreeVectorOfVectorsAdaptor<std::vector<Eigen::Vector2d>, double> tree(2, positions_, 10);
 
 	double squareSum = 0.0;
 	for( int i = 0 ;i!= (int)givepoints.size(); ++i) {	
-		queryPt[0] = givepoints[i].x();
-		queryPt[1] = givepoints[i].y();
-		kdTree->annkSearch( // search
-			queryPt, // query point
-			iKNei, // number of near neighbors
-			nnIdx, // nearest neighbors (returned)
-			dists, // distance (returned)
-			eps); // error bound
-		squareSum += dists[0];
-		footPrints[i] =  getPara(nnIdx[0]) ;
+		double query_pt[2] = { givepoints[i].x(), givepoints[i].y()};
+		size_t num_results = 1;
+		std::vector<size_t> indices(num_results);
+		std::vector<double> distances(num_results);
+		tree.query(&query_pt[0], num_results, &indices[0], &distances[0]);
+		squareSum += distances[0];
+		footPrints[i] =  getPara(indices[0]);
 	}
-	
-	delete[] nnIdx;
-	delete[] dists;
-	delete kdTree;
-	annClose(); // done with ANN
-
 	return squareSum;
 }
 
@@ -450,7 +422,7 @@ void OpenCubicBSplineCurve::getDistance_sd( const Vector2d& point, const Paramet
 		rightv = cos_theta*rightv_pd + (1-cos_theta)*rightv;
 	}
 
-	// Ð´ÈëÕû¸ö´ó¾ØÕóÖÐ
+	// Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for( int iRow = 0 ;iRow!=8; ++iRow )
 	{
 		int iRowG = local2GlobalIdx(ki,iRow);
@@ -500,7 +472,7 @@ void OpenCubicBSplineCurve::getDistance_pd( const Vector2d& point, const Paramet
 	MatrixXd leftm = 2*am.transpose()*am;  //8*8
 	VectorXd rightv= 2*am.transpose()*point;  //8*1
 
-	// Ð´ÈëÕû¸ö´ó¾ØÕóÖÐ
+	// Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for( int iRow = 0 ;iRow!=8; ++iRow )
 	{
 		int iRowG = local2GlobalIdx(ki,iRow);

@@ -116,7 +116,7 @@ public:
 	//************************************
 	// Method:    local2GlobalIdx
 	// Returns:   int
-	// Function:  ÓÉlocalIdx±ä»»globalIdx
+	// Function:  ï¿½ï¿½localIdxï¿½ä»»globalIdx
 	// Time:      2015/07/10
 	// Author:    Qian
 	//************************************
@@ -149,9 +149,9 @@ private:
 
 
 private:
-	double interal_;                //²ÉÑùµãµÄ¼ä¸ô
-	std::vector<Vector2d> controls_;    //ÇúÏßµÄ¿ØÖÆµã
-	std::vector<Vector2d> positions_;   //ÇúÏßÉÏµÄ²ÉÑùµã
+	double interal_;                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½
+	std::vector<Vector2d> controls_;    //ï¿½ï¿½ï¿½ßµÄ¿ï¿½ï¿½Æµï¿½
+	std::vector<Vector2d> positions_;   //ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½
 
 };
 
